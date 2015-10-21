@@ -1,8 +1,24 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 
 <dom-module id="devfest-speakers">
+  <style>
+    paper-card {
+      display: block;
+      margin-bottom: 2ex;
+    }
+  </style>
+
   <template>
     <h2>Devfest speakers</h2>
+
+    <template is="dom-repeat" items="{{speakers}}">
+      <paper-card heading="{{item.name}}">
+        <div class="card-content">
+          <p>{{item.title}}</p>
+        </div>
+      </paper-card>
+    </template>
   </template>
 
   <script>
@@ -10,7 +26,13 @@
       'use strict';
 
       Polymer({
-        is: 'devfest-speakers'
+        is: 'devfest-speakers',
+        ready: function() {
+          this.speakers = [
+            {name: 'Jakub', title: 'Polymer developer'},
+            {name: 'Jana', title: 'Dart developer'}
+          ];
+        },
       });
     })();
   </script>

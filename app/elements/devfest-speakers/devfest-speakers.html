@@ -1,5 +1,6 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="devfest-speakers">
   <style>
@@ -10,6 +11,12 @@
   </style>
 
   <template>
+    <iron-ajax
+      auto
+      url="/api/speakers.json"
+      handle-as="json"
+      last-response="{{speakers}}"></iron-ajax>
+
     <h2>Devfest speakers</h2>
 
     <template is="dom-repeat" items="{{speakers}}">
@@ -27,12 +34,15 @@
 
       Polymer({
         is: 'devfest-speakers',
-        ready: function() {
-          this.speakers = [
-            {name: 'Jakub', title: 'Polymer developer'},
-            {name: 'Jana', title: 'Dart developer'}
-          ];
+        properties: {
+          speakers: {
+            type: Array,
+            observer: '_speakersChanged'
+          }
         },
+        _speakersChanged: function(speakers) {
+          console.log(speakers);
+        }
       });
     })();
   </script>

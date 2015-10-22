@@ -1,5 +1,6 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="devfest-speakers">
@@ -19,7 +20,9 @@
 
     <h2>Devfest speakers</h2>
 
-    <template is="dom-repeat" items="{{speakers}}">
+    <paper-input label="Filter" value="{{filter}}"></paper-input>
+
+    <template is="dom-repeat" items="{{speakersFiltered}}">
       <paper-card heading="{{item.name}}">
         <div class="card-content">
           <p>{{item.title}}</p>
@@ -38,10 +41,24 @@
           speakers: {
             type: Array,
             observer: '_speakersChanged'
+          },
+          filter: String,
+          speakersFiltered: {
+            type: Array,
+            computed: '_computeSpeakersFiltered(speakers, filter)'
           }
         },
         _speakersChanged: function(speakers) {
           console.log(speakers);
+        },
+        _computeSpeakersFiltered: function(speakers, filter) {
+          if (filter === '') {
+            return speakers;
+          }
+
+          return speakers.filter(function (speaker) {
+            return speaker.name.substring(0, filter.length) === filter;
+          })
         }
       });
     })();
